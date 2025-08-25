@@ -1,0 +1,4 @@
+CompanyName,Address,CompanyLogo,EmployeeName,EmployeeId,Designation,ProcessName,DateOfJoining,PayPeriod,PaidDays,LOPDays,PaidLeave,PayDate,ESICNumber,UANNumber,BASIC,HRA,PF,ESIC,TotalEarnings,TotalDeductions,GrossEarnings,TotalNetPayout
+Tech Solutions Pvt Ltd,Delhi,logo1.png,Rahul Sharma,EMP001,Software Engineer,IT,2022-01-15,Jan-2023,30,0,2,2023-01-31,ESIC123,UAN456,20000,8000,1800,500,28000,2300,28000,25700
+FutureSoft Ltd,Mumbai,logo2.png,Pooja Verma,EMP002,HR Manager,HR,2021-11-10,Jan-2023,28,2,1,2023-01-31,ESIC789,UAN987,25000,10000,2000,600,35000,2600,35000,32400
+BrightTech Inc,Bangalore,logo3.png,Amit Kumar,EMP003,Team Lead,Development,2020-05-20,Jan-2023,30,0,0,2023-01-31,ESIC456,UAN654,30000,12000,2500,700,42000,3200,42000,38800

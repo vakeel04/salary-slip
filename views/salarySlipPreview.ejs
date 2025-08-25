@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>salary-slip</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "DM Sans", sans-serif;
+    }
+    .salary-slip {
+      width: 720px;
+      margin: 20px auto;
+      background: #fff;
+      border: 1px solid #000;
+      padding: 10px;
+    }
+    .header {
+      text-align: center;
+      border-bottom: 2px solid #000;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+    .header h2 {
+      margin: 0;
+    }
+    .header p {
+      margin: 3px 0;
+      font-size: 14px;
+    }
+    .employee-summary, .salary-table, .netpay-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+    .employee-summary td, .salary-table td, .salary-table th, .netpay-table td, .netpay-table th {
+      border: 1px solid #000;
+      padding: 6px 10px;
+    }
+    .salary-table th, .netpay-table  th {
+      background: #F0F0F0;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #444;
+    }
+  </style>
+  <style>
+    @media print {
+      body {
+        margin: 0;
+        padding: 0;
+        background: #fff; /* White background for clean print */
+      }
+/*
+      .salary-slip {
+        page-break-inside: avoid;
+        width: 10% !important;
+        margin: 0 auto 12mm auto;
+        border: 1px solid #000;
+        padding: 12mm;
+        font-size: 12px;
+        line-height: 1.5;
+        box-sizing: border-box;
+        background: #fff;
+        /* position: relative; */
+      } */
+      /* Watermark inside salary slip */
+      .salary-slip .watermark {
+        position: absolute;
+        top: 35%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0.1;
+        z-index: 0;
+        text-align: center;
+      }
+      .salary-slip .watermark img {
+        width: 320px;
+        opacity: 0.12;
+      }
+      /* Tables */
+      .salary-slip table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+        position: relative;
+        z-index: 1; /* so watermark stays behind */
+      }
+      .salary-slip td,
+      .salary-slip th {
+        border: 1px solid #000;
+        padding: 2px 4px;
+        font-size: 11px;
+        vertical-align: middle;
+      }
+      .salary-slip th {
+        background: #F7F7F7 !important;
+        font-weight: bold;
+      }
+      /* Header */
+      .header h2 {
+        font-size: 18px;
+        margin-bottom: 4px;
+        text-align: center;
+      }
+      .header p {
+        font-size: 11px;
+        margin: 2px 0;
+        text-align: center;
+      }
+      /* Net Pay Table */
+      .netpay-table th {
+        font-size: 13px;
+        text-align: left;
+        background: #EAEAEA !important;
+      }
+      .netpay-table td {
+        font-size: 12px;
+      }
+      /* Footer */
+      /*.footer {*/
+      /*  font-size: 10px;*/
+      /*  margin-top: 10px;*/
+      /*  text-align: center;*/
+      /*  position: relative;*/
+      /*  z-index: 1;*/
+      /*}*/
+      @page {
+        size: A4;
+        margin: 10mm;
+      }
+    </style>
+
+
+
+</head>
+<body >
+
+  <div style="background-image: url('https://img.freepik.com/free-vector/ombre-blue-curve-light-blue-background_53876-173299.jpg');
+         background-size: cover;
+         height: 100px;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         padding: 0 20px;">
+
+
+
+
+    <h3 class="p-4" style="margin: 0;">Salary Slip Preview</h3>
+    
+  </div>
+
+  <div style="position: relative;" class="salary-slip">
+    <div class="header">    
+   <div style="display: flex; justify-content: space-between; align-items: center;" >
+    <div></div>
+    <h2 style="font-size: 36px;"><%=data?.salary?.CompanyName  %></h2>
+    <img style="width: 60px; " src="<%= data?.salary?.CompanyLogo %>" alt="">
+   </div>
+      <p><%= data?.salary?.Address %></p>
+    </div>
+
+    <table class="employee-summary">
+<tr>
+    
+    <td><b>Employee Pay Summary</b></td>
+    <td rowspan="4" colspan="2" style="text-align:center; font-size:16px;">
+      <b id="salaryInWords"></b>
+    </td>
+
+</tr>      <tr>
+        <td><b>Employee Name:</b> <%=data?.salary?.EmployeeName  %></td>
+      </tr>
+      <tr>
+        <td><b>Employee ID:</b> <%= data?.salary?.EmployeeId %></td>
+      </tr>
+      <tr>
+        <td><b>Designation:</b> <%= data?.salary?.Designation%></td>
+      </tr>
+      <tr>
+        <td><b>Process Name:</b> <%=  data?.salary?.ProcessName %></td>
+        <td colspan="2"><b>Total Earnings:</b> <strong><%=data?.salary?.TotalNetPayout  %></strong></td>
+      </tr>
+      <tr>
+        <td><b>Date of Joining:</b> <%=data?.salary?.DateOfJoining  %></td>
+        <td ><b>Paid Days:</b> <%=data?.salary?.PaidDays  %></td>
+
+        <td><b>LOP Days:</b> <%= data?.salary?.LOPDays %></td>
+      </tr>
+      <tr>
+        <td><b>Pay Period:</b> <%=data?.salary?.PayPeriod  %></td>
+        <td colspan="2"><b>Pay Date: </b><%=data?.salary?.PayDate  %></td>
+      </tr>
+      <tr>
+        <td ><b>UAN Number:</b> <%= data?.salary?.UANNumber %></td>
+        <td colspan="2"><b>Pay Days:</b> <%= data?.salary?.PaidDays %> </td>
+      
+
+      </tr>
+      <tr>
+        <td ><b>ESIC Number:</b> <%= data?.salary?.ESICNumber %></td>
+        <td colspan="2">  <b>Paid Leave (PL):</b> <%= data?.salary?.PaidLeave %></td>
+     
+      </tr>
+    </table>
+
+    <table class="salary-table">
+      <tr>
+        <th>SALARY PAYSCALE</th>
+        <th>EARNING</th>
+        <th>DEDUCTIONS</th>
+        <th>AMOUNT</th>
+      </tr>
+      <tr>
+        <td>BASIC</td>
+        <td><%= data?.salary?.BASIC %></td>
+        <td>PF</td>
+        <td><%= data?.salary?.PF %></td>
+      </tr>
+      <tr>
+        <td>HRA</td>
+        <td><%= data?.salary?.HRA%></td>
+        <td>ESIC</td>
+        <td><%= data?.salary?.ESICNumber %></td>
+      </tr>
+      <tr>
+        <td>Incentive</td>
+        <td><%= data?.salary?.Incentive %></td>
+        <td>Total Deductions</td>
+        <td><%= data?.salary?.TotalDeductions %></td>
+      </tr>
+      <tr>
+        <td><b>Total Earnings</b></td>
+        <td><b><%= data?.salary?.TotalEarnings %></b></td>
+        <td colspan="2"></td>
+      </tr>
+    </table>
+
+    <table class="netpay-table">
+        <tr>
+            <th><b>NET PAY</b></th>
+            <th><b>Amount</b></th>
+        </tr>
+      <tr>
+        <td><b>Gross Earnings</b></td>
+        <td><%= data?.salary?.GrossEarnings %></td>
+      </tr>
+      <tr>
+        <td><b>Total Deductions</b></td>
+        <td><%= data?.salary?.TotalDeductions %></td>
+      </tr>
+      <tr>
+        <td><b>Total Net Payable</b></td>
+        <td><strong><%= data?.salary?.TotalNetPayout %></strong></td>
+      </tr>
+      <tr>
+        <td colspan="2" align="center">*Total Net Payable = Gross Earnings - Total Deductions + Total Reimbursements</td>
+    </tr>
+
+   
+    </table>
+
+     
+
+    <p class="footer" style="text-align: center;">     <b><i> This is a Computer-Generated Slip and does not require signature.</i></b></p>
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+        <img style="width: 400px ; opacity: .2; z-index: -99; position: relative;" src="<%= data?.salary?.CompanyLogo %>" alt="">
+      </div>
+  </div>
+
+
+<div style="text-align: center; margin: 20px;">
+  <button onclick="downloadPDF()" 
+          style="padding: 8px 16px; background: #007bff; color: #fff; border: none; border-radius: 6px; cursor: pointer;">
+    Download PDF
+  </button>
+</div>
+ 
+  </body>
+  </html>
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script>
+  function numberToWords(num) {
+      const a = [
+          '', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven',
+          'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen',
+          'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'
+      ];
+      const b = [
+          '', '', 'Twenty', 'Thirty', 'Forty', 'Fifty',
+          'Sixty', 'Seventy', 'Eighty', 'Ninety'
+      ];
+
+      function inWords(num) {
+          if ((num = num.toString()).length > 9) return 'Overflow';
+          let n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+          if (!n) return;
+          let str = '';
+          str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + ' Crore ' : '';
+          str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + ' Lakh ' : '';
+          str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + ' Thousand ' : '';
+          str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + ' Hundred ' : '';
+          str += (n[5] != 0) ? ((str != '') ? 'and ' : '') +
+              (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + ' ' : '';
+          return str.trim();
+      }
+
+      return inWords(num) + ' Rupees Only';
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+      let salary = "<%= data?.salary?.TotalNetPayout || 0 %>";  // <-- EJS value inject
+      document.getElementById("salaryInWords").innerText = numberToWords(salary);
+  });
+</script>
+<script>
+  function downloadPDF() {
+    const element = document.querySelector(".salary-slip");  // jis div ka PDF banana hai
+
+    const opt = {
+      margin:       0.2,
+      filename:     'SalarySlip.pdf',
+      image:        { type: 'jpeg', quality: 1 },
+      html2canvas:  { scale: 2 },
+      jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save();
+  }
+</script>
+
+
+    

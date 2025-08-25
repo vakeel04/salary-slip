@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>salary-slip</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f7f9fc;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    /* Upload Section */
+    .upload-section {
+      /* margin-top: 50px; */
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    input[type="file"] {
+      flex: 1;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    button {
+      background-color: #2288e7;
+      color: white;
+      padding: 10px 25px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #176ac0;
+    }
+
+    /* Search & Limit */
+    .search-section {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .search-section input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .search-section button {
+      padding: 10px 20px;
+    }
+
+    .search-section label {
+      margin-right: 10px;
+      font-weight: 500;
+    }
+
+    .search-section select {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      margin-top: 25px;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    table th, table td {
+      padding: 14px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    table th {
+      background: #2288e7;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    table tr:hover {
+      background: #f1f7ff;
+    }
+
+    /* Pagination */
+    .pagination {
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      gap: 8px;
+      padding: 0;
+    }
+
+    .pagination li {
+      display: inline-block;
+    }
+
+    .pagination a {
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background: #fff;
+      color: #333;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .pagination a:hover {
+      background: #2288e7;
+      color: white;
+    }
+
+    .pagination .active a {
+      background: #2288e7;
+      color: white;
+      border: none;
+    }
+    .downloadTemplateBtnMain {
+      display: flex;
+      justify-content: end;
+    }
+  </style>
+</head>
+<body>
+
+  <div style="background-image: url('https://img.freepik.com/free-vector/ombre-blue-curve-light-blue-background_53876-173299.jpg');
+         background-size: cover;
+         height: 100px;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         padding: 0 20px;">
+
+
+
+
+    <h3 class="p-4" style="margin: 0;">Salary Slip Generator</h3>
+    
+  </div>
+
+<div class="container"> 
+  
+  <div class="downloadTemplateBtnMain">
+    <button id="downloadTemplateBtn">Download Excel Template</button>
+
+  </div>
+</div>
+  <div class="container">
+    <!-- Upload Section -->
+    <div class="upload-section">
+      <input type="file" id="fileInput">
+      <button id="uploadBtn">Generate</button>
+    </div>
+
+    <!-- Search & Limit -->
+    <div class="search-section">
+      <div style="flex: 1; display: flex; gap: 10px;">
+        <!-- Month filter -->
+        <input type="month" id="monthFilter" name="month"
+        value="<%= data.year && data.month ? `${data.year}-${data.month.padStart(2,'0')}` : '' %>" />
+ 
+      
+        <!-- Search box -->
+        <input type="text" id="searchInput" name="search" 
+               value="<%= data.search %>" 
+               placeholder="Search by employee name or venture name" />
+      
+        <button id="searchBtn" type="button">Search</button>
+      </div>
+      <div>
+        <label for="limitSelect">Items per page</label>
+        <select id="limitSelect" name="limit">
+          <option value="5" <%= data.limit == 5 ? "selected" : "" %>>5</option>
+          <option value="10" <%= data.limit == 10 ? "selected" : "" %>>10</option>
+          <option value="25" <%= data.limit == 25 ? "selected" : "" %>>25</option>
+          <option value="50" <%= data.limit == 50 ? "selected" : "" %>>50</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>S.No</th>
+          <th>Employee Name</th>
+          <th>Salary Month</th>
+          <th>Final Salary</th>
+          <th>Venture Name </th>
+          <th style="text-align: center;">Salary Slip</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (data.salary.length > 0) { %>
+          <% data.salary.forEach((item, index) => { %>
+            <tr>
+              <td><input type="checkbox" class="empCheckbox" value="<%= item.id %>"></td>
+              <td><%= (data.page - 1) * data.limit + index + 1 %></td>
+              <td><%= item.EmployeeName %></td>
+              <td>
+                <% if (item.PayDate) {
+                     // Split by /
+                     const [day, month, year] = item.PayDate.split("/");
+                     const jsDate = new Date(`${year}-${month}-${day}`); // yyyy-MM-dd format valid hota hai
+                %>
+                  <%= jsDate.toLocaleString('en-US', { month: 'long', year: 'numeric' }) %>
+                <% } else { %>
+                  -
+                <% } %>
+              </td>
+              <td><%= item.TotalNetPayout %></td>
+              <td><%= item.CompanyName %></td>
+              <td style="justify-content: center; display: flex ; gap: 10px;">
+                <a href="/preview/<%= item.id %>">
+                  <button>View</button>
+                </a>
+
+                <a href="/edit/<%= item.id %>">
+                  <button>Edit</button>
+                </a>
+
+                
+            
+                <a href="#">
+                  <button onclick="sendMail('<%=item.id %>')">Send Mail</button> <!-- yaha 5 employee ka id h -->
+                </a>
+
+              </td>
+      
+            </tr>
+          <% }) %>
+        <% } else { %>
+          <tr>
+            <td colspan="6" style="text-align:center;">No records found</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+      <!-- Pagination -->
+      <ul class="pagination">
+        <% if (data.page > 1) { %>
+          <li><a href="?page=<%= data.page - 1 %>&limit=<%= data.limit %>&search=<%= data.search %>">Previous</a></li>
+        <% } %>
+      
+        <% for (let i = 1; i <= data.totalPages; i++) { %>
+          <li class="<%= data.page === i ? 'active' : '' %>">
+            <a href="?page=<%= i %>&limit=<%= data.limit %>&search=<%= data.search %>"><%= i %></a>
+          </li>
+        <% } %>
+      
+        <% if (data.page < data.totalPages) { %>
+          <li><a href="?page=<%= data.page + 1 %>&limit=<%= data.limit %>&search=<%= data.search %>">Next</a></li>
+        <% } %>
+      </ul>
+  
+      
+      <a href="#">
+        <button type="button" onclick="sendSelectedMails()">Send Mail</button>
+      </a>
+  
+  </div>
+  </div>
+  
+</body>
+</html>
+
+<script>
+  async function sendMail(id) {
+    try {
+      let response = await fetch(`/salary-slip/sendmail/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ ids: [id] }) 
+      });
+
+      let result = await response.json();
+
+      if (response.ok && result.status) {
+        alert("✅ " + result.message);
+      } else {
+        alert("❌ Failed: " + result.message);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("⚠️ Error connecting to API");
+    }
+  }
+</script>
+
+
+<script>
+  document.getElementById("uploadBtn").addEventListener("click", async () => {
+    const fileInput = document.getElementById("fileInput");
+    if (!fileInput.files.length) {
+      alert("Please select a file first!");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+
+    try {
+      const res = await fetch("/salary-slip/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (data.status) {
+        alert("salary slip Generate successfully!");
+        window.location.reload(); 
+      } else {
+        alert( data.message);
+      }
+    } catch (err) {
+      alert("⚠️ Error uploading file: " + err.message);
+    }
+  });
+</script>
+
+<script>
+ 
+  document.getElementById("searchBtn").addEventListener("click", () => {
+    const searchValue = document.getElementById("searchInput").value;
+    const limitValue = document.getElementById("limitSelect").value;
+    const monthValue = document.getElementById("monthFilter").value; // 👈 format = "2025-08"
+    console.log("monthValue",monthValue);
+    let query = `?search=${encodeURIComponent(searchValue)}&limit=${limitValue}&page=1`;
+    console.log("query",query);
+    
+
+    if (monthValue) {
+      const [year, month] = monthValue.split("-");
+      query += `&month=${month}&year=${year}`;
+    }
+
+    window.location.href = `/${query}`;
+  });
+
+  
+  document.getElementById("limitSelect").addEventListener("change", () => {
+    const searchValue = document.getElementById("searchInput").value;
+    const limitValue = document.getElementById("limitSelect").value;
+    const monthValue = document.getElementById("monthFilter").value;
+
+    let query = `?search=${encodeURIComponent(searchValue)}&limit=${limitValue}&page=1`;
+
+    if (monthValue) {
+      const [year, month] = monthValue.split("-");
+      query += `&month=${month}&year=${year}`;
+    }
+ console.log("query",query);
+ 
+    window.location.href = `/${query}`;
+  });
+</script>
+
+
+  
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script>
+  document.getElementById("downloadTemplateBtn").addEventListener("click", () => {
+    // Template columns exactly as your model
+    const templateData = [
+      {
+        CompanyName: "",    
+        Address: "",
+        email: "",
+        EmployeeName: "",
+        EmployeeId: "",
+        Designation: "",
+        PayDate: "",
+        TotalNetPayout: "",
+        officeEmail:"",
+        ProcessName: "",
+        DateOfJoining: "",
+        PayPeriod: "",
+        PaidDays: "",
+        LOPDays: "",
+        PaidLeave: "",
+        ESICNumber: "",
+        UANNumber: "",
+        BASIC: "",
+        Incentive:"",
+        HRA: "",
+        PF: "",
+        ESIC: "",
+        TotalEarnings: "",
+        TotalDeductions: "",
+        GrossEarnings: ""
+      }
+    ];
+    const worksheet = XLSX.utils.json_to_sheet(templateData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "SalaryTemplate");
+    XLSX.writeFile(workbook, "Salary_Template.xlsx");
+  });
+</script>
+
+<script>
+  async function sendSelectedMails() {
+    // sab selected checkboxes nikal lo
+    const selected = [...document.querySelectorAll(".empCheckbox:checked")].map(cb => cb.value);
+
+    if (selected.length === 0) {
+      alert("⚠️ Please select at least one employee!");
+      return;
+    }
+
+    try {
+      let response = await fetch("/salary-slip/sendmail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: selected })
+      });
+
+      let result = await response.json();
+
+      if (response.ok && result.status) {
+       alert("📧 Mail sent successfully!");
+        window.location.reload();
+      } else {
+        alert(" Failed: " + result.message);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("⚠️ Error connecting to API");
+    }
+  }
+</script>

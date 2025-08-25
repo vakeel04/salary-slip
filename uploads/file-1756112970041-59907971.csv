@@ -1,0 +1,3 @@
+CompanyName,Address,email,EmployeeName,EmployeeId,Designation,PayDate,TotalNetPayout,officeEmail,ProcessName,DateOfJoining,PayPeriod,PaidDays,LOPDays,PaidLeave,ESICNumber,UANNumber,BASIC,Incentive,HRA,PF,ESIC,TotalEarnings,TotalDeductions,GrossEarnings
+TechCorp Pvt Ltd,"123 Business Street, Mumbai",hr@techcorp.com,Amit Kumar,EMP001,Software Engineer,15/05/2025,55000,amit.k@techcorp.com,Development,10/01/2022,01/05/2025 - 31/05/2025,30,0,2,ESIC12345,UAN98765,25000,5000,15000,2000,500,45000,2500,47500
+TechCorp Pvt Ltd,"123 Business Street, Mumbai",hr@techcorp.com,Sneha Sharma,EMP002,HR Manager,15/05/2025,65000,sneha.s@techcorp.com,HR,20/03/2020,01/05/2025 - 31/05/2025,30,0,1,ESIC67890,UAN54321,30000,7000,18000,2500,800,55000,3300,58300
