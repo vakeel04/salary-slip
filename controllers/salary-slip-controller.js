@@ -20,17 +20,17 @@ const uploadSalaryData = async (req, res) => {
         .json({ status: false, message: "Uploaded file is empty" });
     }
 let companyLogos = {
-  "A2G": "/companyLogo/A2G.png",
-  "AHEC": "/companyLogo/AHEC.png",
-  "AHIT": "/companyLogo/AHIT.png",
-  "AHUF": "/companyLogo/AHUF.png",
-  "BBSMIT": "/companyLogo/BBSMIT.png",
+  A2G: "/companyLogo/A2G.png",
+  AHEC: "/companyLogo/AHEC.png",
+  AHIT: "/companyLogo/AHIT.png",
+  AHUF: "/companyLogo/AHUF.png",
+  BBSMIT: "/companyLogo/BBSMIT.png",
   "BHARAT SCHOOLS": "/companyLogo/Bharat Schools.png",
   "DIWAM HANDICRAFTS": "/companyLogo/Diwam Handicrafts.png",
   "DIWAM JEWELS": "/companyLogo/Diwam Jewels.png",
   "DIWAM VASTRA": "/companyLogo/Diwam Vastra.png",
   "MARIKA TEXTILES": "/companyLogo/Marika Textiles.png",
-  "MICS": "/companyLogo/MICS.png",
+  MICS: "/companyLogo/MICS.png",
   "UNI HUB": "/companyLogo/Uni Hub.png",
 };
     sheetData = sheetData.map((row) => {

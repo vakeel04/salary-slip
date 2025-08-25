@@ -15,7 +15,7 @@ const sequelize = new Sequelize(
 sequelize
   .authenticate()
   .then((w) => {
-    sequelize.sync( );
+    sequelize.sync();
     console.log("MySQL connection established successfully.");
   })
   .catch((error) => {

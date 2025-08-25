@@ -1,40 +1,35 @@
+const { Op, fn, col, where, literal } = require("sequelize");
 const Salary = require("../../models/salary-slip-model");
-const { Op, fn, col, where } = require("sequelize");
 
 const getHomePage = async (req, res) => {
   const limit = parseInt(req.query.limit) || 5;
   const page = parseInt(req.query.page) || 1;
   const search = req.query.search || "";
-  const month = req.query.month || ""; // month filter
-  const year = req.query.year || "";   // year filter
   const offset = (page - 1) * limit;
+  const month = req.query.month; // "05"
+  const year = req.query.year; // "2025"
 
-  let whereCondition = {};
-
-  // SEARCH
+  let andConditions = [];
   if (search) {
-    whereCondition[Op.or] = [
-      { EmployeeName: { [Op.like]: `%${search}%` } },
-      { CompanyName: { [Op.like]: `%${search}%` } },
-    ];
+    andConditions.push({
+      [Op.or]: [
+        { EmployeeName: { [Op.like]: `%${search}%` } },
+        { CompanyName: { [Op.like]: `%${search}%` } },
+      ],
+    });
   }
-
-  // MONTH + YEAR filter
-  if (month || year) {
-    let andConditions = [];
-
-    if (month) {
-      andConditions.push(where(fn("MONTH", col("PayDate")), parseInt(month)));
-    }
-    if (year) {
-      andConditions.push(where(fn("YEAR", col("PayDate")), parseInt(year)));
-    }
-
-    whereCondition = {
-      ...whereCondition,
-      [Op.and]: andConditions
-    };
+  if (month) {
+    andConditions.push(
+      where(fn("substr", col("PayDate"), 4, 2), month.padStart(2, "0"))
+    );
   }
+  if (year) {
+    andConditions.push(where(fn("substr", col("PayDate"), 7, 4), year));
+  }
+  const whereCondition =
+    andConditions.length > 0 ? { [Op.and]: andConditions } : {};
+
+  console.log("👉 Final whereCondition:", whereCondition);
 
   const { count: totalDocs, rows: salary } = await Salary.findAndCountAll({
     where: whereCondition,
@@ -44,20 +39,8 @@ const getHomePage = async (req, res) => {
   });
 
   const totalPages = Math.ceil(totalDocs / limit);
-
   res.render("index", {
-    data: {
-      salary,
-      sort: req.query.sort || "desc",
-      page,
-      totalPages,
-      limit,
-      search,
-      month: req.query.month || "",
-      year: req.query.year || ""
-  
-    },
-  });
+    data: {salary, sort: req.query.sort || "desc",page,totalPages,limit, search,},});
 };
 
 module.exports = { getHomePage };

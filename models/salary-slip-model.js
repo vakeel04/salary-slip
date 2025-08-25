@@ -54,27 +54,9 @@ const Salary = sequelize.define(
     },
 
     
-    PayDate: {
-      type: DataTypes.STRING,
-      get() {
-        const rawValue = this.getDataValue("PayDate");
-        if (!rawValue) return null;
-
-        const n = parseFloat(rawValue);
-        if (isNaN(n)) return rawValue;
-
-        // Excel serial → JS Date
-        const utc_days = Math.floor(n - 25569);
-        const utc_value = utc_days * 86400; // seconds
-        const date_info = new Date(utc_value * 1000);
-
-        const dd = String(date_info.getUTCDate()).padStart(2, "0");
-        const mm = String(date_info.getUTCMonth() + 1).padStart(2, "0");
-        const yyyy = date_info.getUTCFullYear();
-
-        return `${dd}/${mm}/${yyyy}`; // <-- Final formatted date
-      },
-    },
+ PayDate: {
+  type: DataTypes.STRING,
+},
     ESICNumber: {
       type: DataTypes.STRING,
     },
