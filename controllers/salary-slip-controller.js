@@ -276,7 +276,7 @@ const mailSender = async (req, res) => {
         <tr><td><b>Designation:</b> ${emp?.Designation}</td></tr>
         <tr>
           <td><b>Process Name:</b> ${emp?.ProcessName}</td>
-          <td><b>Total Earnings:</b> ${emp?.TotalEarnings}</td>
+          <td><b>Total Earnings:</b> ${emp?.Salary}</td>
           <td><b>LOP Days:</b> ${emp?.LOPDays}</td>
         </tr>
         <tr>
@@ -323,7 +323,7 @@ const mailSender = async (req, res) => {
         </tr>
         <tr>
           <td><b>Total Earnings</b></td>
-          <td><b>${emp?.TotalEarnings}</b></td>
+          <td><b>${emp?.Salary}</b></td>
           <td colspan="2"></td>
         </tr>
       </table>
@@ -572,7 +572,7 @@ const mailSenderById = async (req, res) => {
         <tr><td><b>Designation:</b> ${emp?.Designation}</td></tr>
         <tr>
           <td><b>Process Name:</b> ${emp?.ProcessName}</td>
-          <td><b>Total Earnings:</b> ${emp?.TotalEarnings}</td>
+          <td><b>Total Earnings:</b> ${emp?.Salary}</td>
           <td><b>LOP Days:</b> ${emp?.LOPDays}</td>
         </tr>
         <tr>
@@ -619,7 +619,7 @@ const mailSenderById = async (req, res) => {
         </tr>
         <tr>
           <td><b>Total Earnings</b></td>
-          <td><b>${emp?.TotalEarnings}</b></td>
+          <td><b>${emp?.Salary}</b></td>
           <td colspan="2"></td>
         </tr>
       </table>

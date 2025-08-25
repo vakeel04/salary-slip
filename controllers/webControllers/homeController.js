@@ -28,9 +28,6 @@ const getHomePage = async (req, res) => {
   }
   const whereCondition =
     andConditions.length > 0 ? { [Op.and]: andConditions } : {};
-
-  console.log("👉 Final whereCondition:", whereCondition);
-
   const { count: totalDocs, rows: salary } = await Salary.findAndCountAll({
     where: whereCondition,
     order: [["createdAt", req.query.sort === "asc" ? "ASC" : "DESC"]],

@@ -190,14 +190,16 @@
         <td colspan="2"><b>Total Earnings:</b> <strong><%=data?.salary?.TotalNetPayout  %></strong></td>
       </tr>
       <tr>
-        <td><b>Date of Joining:</b> <%=data?.salary?.DateOfJoining  %></td>
+        <td><b>Date of Joining:</b>  <%= new Date((data?.salary?.DateOfJoining - 25569) * 86400 * 1000).toLocaleDateString("en-GB") %></td>
         <td ><b>Paid Days:</b> <%=data?.salary?.PaidDays  %></td>
 
         <td><b>LOP Days:</b> <%= data?.salary?.LOPDays %></td>
       </tr>
       <tr>
         <td><b>Pay Period:</b> <%=data?.salary?.PayPeriod  %></td>
-        <td colspan="2"><b>Pay Date: </b><%=data?.salary?.PayDate  %></td>
+        <td colspan="2"><b>Pay Date: </b>
+          <%= new Date((data?.salary?.PayDate - 25569) * 86400 * 1000).toLocaleDateString("en-GB") %>
+        </td>
       </tr>
       <tr>
         <td ><b>UAN Number:</b> <%= data?.salary?.UANNumber %></td>
@@ -239,7 +241,7 @@
       </tr>
       <tr>
         <td><b>Total Earnings</b></td>
-        <td><b><%= data?.salary?.TotalEarnings %></b></td>
+        <td><b><%= data?.salary?.Salary %></b></td>
         <td colspan="2"></td>
       </tr>
     </table>

@@ -78,7 +78,7 @@ const Salary = sequelize.define(
     ESIC: {
       type: DataTypes.STRING,
     },
-    TotalEarnings: {
+    Salary: {
       type: DataTypes.STRING,
     },
     TotalDeductions: {
